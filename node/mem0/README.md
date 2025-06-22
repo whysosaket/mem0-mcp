@@ -13,10 +13,16 @@ A Model Context Protocol (MCP) server that provides memory storage and retrieval
 
 ## Installation
 
-### Running with npx
+### Running with npx (stdio mode)
 
 ```bash
 env MEM0_API_KEY=your-api-key-here npx -y @mem0/mcp
+```
+
+### Running as HTTP server (streamable mode)
+
+```bash
+env MEM0_API_KEY=your-api-key-here npx -y @mem0/mcp --host 0.0.0.0 --port 3000
 ```
 
 ### Manual Installation
@@ -29,9 +35,9 @@ npm install -g @mem0/mcp
 
 ### Running on Cursor
 
-#### Configuring Cursor 🖥️
+#### Configuring Cursor 🖥️ (stdio mode)
 
-To configure Mem0 MCP in Cursor:
+To configure Mem0 MCP in Cursor with stdio transport:
 
 1. Open Cursor Settings
 2. Go to Features > MCP Servers
@@ -52,6 +58,31 @@ To configure Mem0 MCP using JSON configuration:
       "env": {
         "MEM0_API_KEY": "YOUR-API-KEY-HERE"
       }
+    }
+  }
+}
+```
+
+#### Configuring Cursor 🖥️ (HTTP streamable mode)
+
+To configure Mem0 MCP in Cursor with HTTP streamable transport:
+
+1. Start the server: `env MEM0_API_KEY=your-api-key-here npx -y @mem0/mcp --host 0.0.0.0 --port 3000`
+2. Open Cursor Settings
+3. Go to Features > MCP Servers
+4. Click "+ Add New MCP Server"
+5. Enter the following:
+   - Name: "mem0-mcp-http" (or your preferred name)
+   - Type: "http"
+   - URL: `http://localhost:3000/mcp`
+
+To configure Mem0 MCP HTTP using JSON configuration:
+
+```json
+{
+  "mcpServers": {
+    "mem0-mcp-http": {
+      "url": "http://localhost:3000/mcp"
     }
   }
 }
@@ -175,10 +206,16 @@ MEM0_API_KEY=your-api-key-here
 
 ### Running Development Server
 
-To run the server in development mode:
+To run the server in development mode (stdio):
 
 ```bash
 npm run dev
+```
+
+To run the server in development mode (HTTP streamable):
+
+```bash
+npm run dev -- --host 0.0.0.0 --port 3000
 ```
 
 ### Building
@@ -191,11 +228,24 @@ npm run build
 
 ### Starting the Server
 
-To start the server after building:
+To start the server after building (stdio):
 
 ```bash
 npm start
 ```
+
+To start the server after building (HTTP streamable):
+
+```bash
+npm start -- --host 0.0.0.0 --port 3000
+```
+
+### Command Line Options
+
+- `--host <host>`: Host to bind to (default: 0.0.0.0)
+- `--port <port>`: Port to listen on (default: 3000)
+
+If no command line options are provided, the server runs in stdio mode for backward compatibility.
 
 ## Error Handling
 
@@ -226,4 +276,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-MIT 
+MIT  
